@@ -5,6 +5,8 @@
 /* Sets constants */
 #define WIDTH 900
 #define HEIGHT 500
+  
+
 
 int main(int argc, char **argv)
 {
@@ -15,8 +17,10 @@ int main(int argc, char **argv)
     return 1;
   }
 
+
+
   /* Creates a window */
-  SDL_Window *window = SDL_CreateWindow("The Witcher",
+  SDL_Window *window = SDL_CreateWindow("The Ghost",
                                         SDL_WINDOWPOS_CENTERED,
                                         SDL_WINDOWPOS_CENTERED,
                                         WIDTH, HEIGHT, 0);
@@ -27,9 +31,11 @@ int main(int argc, char **argv)
     SDL_Quit();
     return 0;
   }
+	
+
 
   /* Create a renderer  */
-  SDL_Renderer *rend = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  SDL_Renderer *rend = SDL_CreateRenderer(window, -1, 0);
   if (!rend)
   {
     printf("Error creating renderer: %s\n", SDL_GetError());
@@ -37,6 +43,21 @@ int main(int argc, char **argv)
     SDL_Quit();
     return 0;
   }
+
+
+
+  // load the image
+   SDL_Surface * image = SDL_LoadBMP("./background.bmp");
+   if(!image)
+    {
+        printf( "Unable to load image %s! SDL Error: %s\n", "background.bmp", SDL_GetError() );
+        return 0;
+     }
+   SDL_Texture * texture = SDL_CreateTextureFromSurface(rend, image);
+  
+
+
+
   bool running = true;
   SDL_Event event;
   while (running)
@@ -51,14 +72,22 @@ int main(int argc, char **argv)
         break;
       }
     }
-    // clear screen
-    SDL_RenderClear(rend);
+
+     
+    SDL_RenderCopy(rend, texture, NULL, NULL);
+
+
+   
 
     // show what was draw
     SDL_RenderPresent(rend);
+     // clear screen
+    SDL_RenderClear(rend);
   }
 
   /* Frees memory */
+  SDL_DestroyTexture(texture);
+  SDL_FreeSurface(image);
   SDL_DestroyRenderer(rend);
   SDL_DestroyWindow(window);
   SDL_Quit();
