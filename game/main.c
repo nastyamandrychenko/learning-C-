@@ -15,10 +15,7 @@ int main(int argc, char **argv)
   }
 
   /* Creates a window */
-  SDL_Window *window = SDL_CreateWindow("The Ghost",
-                                        SDL_WINDOWPOS_CENTERED,
-                                        SDL_WINDOWPOS_CENTERED,
-                                        900, 500, 0);
+  SDL_Window *window = SDL_CreateWindow("The Ghost", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 900, 500, 0);
 
   if (!window)
   {
@@ -46,11 +43,18 @@ int main(int argc, char **argv)
   }
   SDL_Texture *texture = SDL_CreateTextureFromSurface(rend, image);
 
+ // boolean 
   bool running = true, jump = false, can_jump = true;
 
   // create the ghost
-  float x_pos = 0, y_pos = 350, yVel = 0;
+
+  SDL_Surface *image_ghost = SDL_LoadBMP("./ghost_pix.bmp");
+  SDL_Texture *texture_ghost = SDL_CreateTextureFromSurface(rend, image_ghost);
+
+  float x_pos = 0, y_pos = 350, yVel = 0, xVel = 0;
   SDL_Rect ghost = {x_pos, y_pos, 90, 90};
+
+  SDL_QueryTexture(texture_ghost, NULL, NULL, &ghost.w, &ghost.h);
 
   SDL_Event event;
 
@@ -93,13 +97,17 @@ int main(int argc, char **argv)
       }
     }
     yVel += 50;
+    
     if (jump && can_jump)
     {
       can_jump = false;
       yVel = -1200;
+      xVel += 50;
+      //  xVel = 100;
     }
 
     y_pos += yVel / 50;
+    x_pos += xVel/50;
 
     if (y_pos >= 500 - ghost.h)
     {
@@ -110,13 +118,13 @@ int main(int argc, char **argv)
     }
 
     ghost.y = y_pos;
-    
-    printf("%d\n", ghost.y);
+    ghost.x = x_pos;
+
+
     SDL_RenderCopy(rend, texture, NULL, NULL);
-
-    SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
-    SDL_RenderFillRect(rend, &ghost);
-
+   SDL_RenderCopy(rend, texture_ghost, NULL, &ghost);
+    // SDL_SetRenderDrawColor(rend, 255, 0, 0, 255);
+    // SDL_RenderFillRect(rend, &ghost);
     // show what was draw
     SDL_RenderPresent(rend);
 
