@@ -3,7 +3,12 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 /* Sets constants */
-#define JUMP -1200
+ #define levity 50
+#define jump -1200
+ #define width 900
+ #define height 500
+
+
 
 int main(int argc, char **argv)
 {
@@ -15,7 +20,7 @@ int main(int argc, char **argv)
   }
 
   /* Creates a window */
-  SDL_Window *window = SDL_CreateWindow("The Ghost", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 900, 500, 0);
+  SDL_Window *window = SDL_CreateWindow("The Ghost", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
 
   if (!window)
   {
@@ -44,15 +49,15 @@ int main(int argc, char **argv)
   SDL_Texture *texture = SDL_CreateTextureFromSurface(rend, image);
 
  // boolean 
-  bool running = true, jump = false, can_jump = true;
+  bool running = true, jump = false, jump_again = true; 
 
   // create the ghost
 
   SDL_Surface *image_ghost = SDL_LoadBMP("./ghost_pix.bmp");
   SDL_Texture *texture_ghost = SDL_CreateTextureFromSurface(rend, image_ghost);
 
-  float x_pos = 0, y_pos = 350, yVel = 0, xVel = 0;
-  SDL_Rect ghost = {x_pos, y_pos, 90, 90};
+  float x = 0, y = 350, yVelocity = 0;
+  SDL_Rect ghost = {x, y, 90, 90};
 
   SDL_QueryTexture(texture_ghost, NULL, NULL, &ghost.w, &ghost.h);
 
@@ -73,7 +78,7 @@ int main(int argc, char **argv)
         switch (event.key.keysym.scancode)
         {
         case SDL_SCANCODE_SPACE:
-          jump = true;
+          jump == true;
           break;
 
         default:
@@ -84,7 +89,7 @@ int main(int argc, char **argv)
         switch (event.key.keysym.scancode)
         {
         case SDL_SCANCODE_SPACE:
-          jump = false;
+          jump == false;
           break;
 
         default:
@@ -96,29 +101,28 @@ int main(int argc, char **argv)
         break;
       }
     }
-    yVel += 50;
+
     
-    if (jump && can_jump)
+    yVelocity += levity;
+    
+    if (jump  && jump_again )
     {
-      can_jump = false;
-      yVel = -1200;
-      xVel += 50;
-      //  xVel = 100;
+      jump_again = false;
+      yVelocity = jump;
     }
 
-    y_pos += yVel / 50;
-    x_pos += xVel/50;
+    y += yVelocity / 60;
 
-    if (y_pos >= 500 - ghost.h)
+    if (y >= height - ghost.h)
     {
-      yVel = 0;
-      y_pos = 500 - ghost.h;
-      if (!jump)
-        can_jump = true;
+      yVelocity = 0;
+      y = height - ghost.h;
+      if (jump == false)
+        jump_again = true;
     }
 
-    ghost.y = y_pos;
-    ghost.x = x_pos;
+    ghost.y = y;
+ 
 
 
     SDL_RenderCopy(rend, texture, NULL, NULL);
