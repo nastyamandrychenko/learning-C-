@@ -11,7 +11,6 @@ char *getRandomWord(char **array, int countWords)
     char *random;
     srand(time(NULL));
     random = array[rand() % countWords];
-    // printf("\n%s",random);
     return random;
 };
 
