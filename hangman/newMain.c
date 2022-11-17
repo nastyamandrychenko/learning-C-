@@ -101,33 +101,34 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
     char character;
     char dash = '_';
     char *dashes = malloc(lengthOfWord * sizeof(char));
-
-    while(mistakes < 3){
-    printf("\n");
-    for (int i = 0; i < lengthOfWord; i++)
+        printf("\n");
+  for (int i = 0; i < lengthOfWord; i++)
     {
         // printf("%c ", wordBeforeGuess[i]);
         dashes[i] = dash;
-        // printf("%c ", dashes[i]);
+        printf("%c ", dashes[i]);
     }
+    while(mistakes < 3){
+
     printf("\n");
     printf("\nEnter a character: ");
     scanf(" %c", &character);
     character = tolower(character);
  
-     
+    int right = 0;
     for (int i = 0; i < lengthOfWord; i++)
     {
         if (mainWord[i] == character)
         {
             dashes[i] = mainWord[i];
             rightCharacters++;
+            right++;
         }
         printf("%c ", dashes[i]);
     }
 
 
-    if (rightCharacters == 0)
+    if (right == 0)
     {
         mistakes++;
     };
@@ -136,17 +137,15 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
        printf("\n\nYOU WON!");
       break;
     }
+
+    
     }
  
+
+
      if(rightCharacters < lengthOfWord){
-    printf("\n\n\n");
     printf("\n\nYOU LOST!");	
     }
-    // printf("%d", mistakes);
-
-    //    while(mistakes < 10){
-
-    //    }
     free(dashes);
 };
 
