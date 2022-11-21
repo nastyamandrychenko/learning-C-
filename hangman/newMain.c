@@ -3,7 +3,7 @@
 #include <time.h>
 #include <ctype.h>
 #include <string.h>
-#include<stdbool.h>  
+#include <stdbool.h>
 
 // function get random word from array
 char *getRandomWord(char **array, int countWords)
@@ -16,14 +16,12 @@ char *getRandomWord(char **array, int countWords)
     return random;
 };
 
-
-
 // function receive name of file, then open this file and count how many words in it. Then in the function we create dynamic array
 // and fill with words from the file. we call the function to get a random word, then we clear the dynamic array and finally return the random word from our file
 char *getWordFromFile(char *nameOfFile)
 {
     int x;
-    char word[10];
+    char word[30];
     // open file
     FILE *file;
     file = fopen(nameOfFile, "r");
@@ -69,8 +67,6 @@ char *getWordFromFile(char *nameOfFile)
     return wordWeNeed;
 }
 
-
-
 // function converts letters to lower case
 char *lowercase(char *nameOfFile)
 {
@@ -81,8 +77,6 @@ char *lowercase(char *nameOfFile)
     }
     return word;
 }
-
-
 
 // the function asks a person for a number and returns it
 int userNumber()
@@ -102,7 +96,6 @@ int userNumber()
 
 void printGallows(int mistakes);
 
-
 void checkUserLetters(char *mainWord, int lengthOfWord)
 {
 
@@ -111,10 +104,11 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
     char character;
     char dash = '_';
     char *dashes = malloc(lengthOfWord * sizeof(char));
-    char *alreadyUsed = malloc((lengthOfWord+10) * sizeof(char));
+    char *alreadyUsed = malloc((lengthOfWord + 10) * sizeof(char));
     int numOfChar = 0;
+    int lives = 10;
     printf("\n");
-    
+
     for (int i = 0; i < lengthOfWord; i++)
     {
         dashes[i] = dash;
@@ -124,22 +118,38 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
     {
         printGallows(mistakes);
         printf("\n");
-   for (int i = 0; i < lengthOfWord; i++)
-   {
-        printf("%c ", dashes[i]);
-       }
+        for (int i = 0; i < lengthOfWord; i++)
+        {
+            printf("%c ", dashes[i]);
+        }
+        printf("\n\nYou have %d attempts", lives);
         printf("\n");
         printf("\nEnter a character: ");
         scanf(" %c", &character);
         character = tolower(character);
-        alreadyUsed[numOfChar] = character;
-        
-        bool characterUsed = false;
-        while (characterUsed = true)
+
+        bool characterUsed = true;
+
+        while (characterUsed == true)
         {
-           
+            for (int i = 0; i < lengthOfWord + 10; i++)
+            {
+                if (alreadyUsed[i] != character)
+                {
+                    characterUsed = false;
+                }
+                else
+                {
+                    characterUsed = true;
+                    printf("\nYou have already entered this letter. Try another one: ");
+                    scanf(" %c", &character);
+                    character = tolower(character);
+                    break;
+                }
+            }
         }
-        
+
+        alreadyUsed[numOfChar] = character;
 
         int right = 0;
         for (int i = 0; i < lengthOfWord; i++)
@@ -150,124 +160,142 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
                 rightCharacters++;
                 right++;
             }
-            // printf("%c ", dashes[i]);
         }
-
-        
 
         if (right == 0)
         {
             mistakes++;
+            lives--;
         };
 
         if (rightCharacters == lengthOfWord)
         {
-            printf("\n\nYOU WON!");
+            printf("%s", mainWord);
+            printf("\n\nYou won!");
+            printf("\n");
             break;
         }
+
         numOfChar++;
+        printf("\nLetters used:");
+        for (int i = 0; i < numOfChar; i++)
+        {
+            printf("%c ", alreadyUsed[i]);
+        }
+             printf("\n");
     }
-for (int i = 0; i < numOfChar; i++)
-{
-    printf("%c", alreadyUsed[i]);
-}
 
     if (rightCharacters < lengthOfWord)
     {
-        printf("\n\nYOU LOST!");
+        printf("\n\nYou lost!");
+        printf("\nRiddle word:");
+        printf("%s", mainWord);
+        printf("\n");
         printGallows(mistakes);
     }
     free(dashes);
 };
-  
-
 
 int main(void)
 {
+    bool gameRestart = true;
 
-    printf("\n\t\tWELCOME TO HANGMAN!!!");
-    printf("\n\n\t\t\tRULES:");
-    printf("\n\t - Maximum 10 mistakes are allowed.");
-    printf("\n\t - All alphabet are in lower case.\n");
-
-    printf("\n\n\t\t\tMENU");
-    printf("\n\t How many letters will be in the word:\n\t Write a number from 3 to 7\n");
-    char *word;
-    int number = userNumber();
-
-    switch (number)
+    while (gameRestart == true)
     {
-    case 3:
-        word = lowercase("three.txt");
-        break;
+        printf("\n\t\tWELCOME TO HANGMAN!!!");
+        printf("\n\n\t\t\tRULES:");
+        printf("\n\t - Maximum 10 mistakes are allowed.");
+        printf("\n\t - All alphabet are in lower case.\n");
 
-    case 4:
-        word = lowercase("four.txt");
-        break;
+        printf("\n\n\t\t\tMENU");
+        printf("\n\t How many letters will be in the word:\n\t Write a number from 3 to 7\n");
+        char *word;
+        int number = userNumber();
 
-    case 5:
-        word = lowercase("five.txt");
-        break;
+        switch (number)
+        {
+        case 3:
+            word = lowercase("three.txt");
+            break;
 
-    case 6:
-        word = lowercase("six.txt");
-        break;
+        case 4:
+            word = lowercase("four.txt");
+            break;
 
-    case 7:
-        word = lowercase("seven.txt");
-        break;
+        case 5:
+            word = lowercase("five.txt");
+            break;
 
-    default:
-        break;
-    };
-    int len = strlen(word);
-    // char *word = lowercase("four.txt");
-    printf("\n%s -> %d", word, len);
+        case 6:
+            word = lowercase("six.txt");
+            break;
+        case 7:
+            word = lowercase("seven.txt");
+            break;
+        };
 
-    checkUserLetters(word, len);
+        int len = strlen(word);
+        // char *word = lowercase("four.txt");
+        printf("\n%s -> %d", word, len);
+
+        checkUserLetters(word, len);
+        int gameRest;
+        printf("\n\nIf you want to start the game again press 1\nif you want to end the game, press any other key\n"); // At the end of the game program asks user to replay or not
+
+        scanf("%d", &gameRest);
+        if (gameRest == 1)
+        {
+            gameRestart = true;
+        }
+        else
+        {
+            gameRestart = false;
+        }
+    }
 }
 
-void printGallows(int mistakes){
+void printGallows(int mistakes)
+{
     switch (mistakes)
     {
     case 1:
-         printf("\n\n    ___||___");
+        printf("\n\n    ___||___");
         break;
     case 2:
-     printf("\n\n       ||\n       ||\n    ___||___");
-     break;
+        printf("\n\n       ||\n       ||\n    ___||___");
+        break;
 
-      case 3:
-      printf("\n\n       ||\n       ||\n       ||\n       ||\n    ___||___");
-     break; 
+    case 3:
+        printf("\n\n       ||\n       ||\n       ||\n       ||\n    ___||___");
+        break;
 
-     case 4:
+    case 4:
         printf("\n\n       ||==\n       ||\n       ||\n       ||\n    ___||___");
-     break;
+        break;
 
     case 5:
-       printf("\n\n       ||====\n       ||\n       ||\n       ||\n    ___||___");
-     break;
+        printf("\n\n       ||====\n       ||\n       ||\n       ||\n    ___||___");
+        break;
 
     case 6:
-    printf("\n\n       ||=======\n       ||\n       ||\n       ||\n    ___||___");
-     break;
+        printf("\n\n       ||=======\n       ||\n       ||\n       ||\n    ___||___");
+        break;
 
     case 7:
-     printf("\n\n       ||=======\n       ||      |\n       ||\n       ||\n    ___||___");
-     break;
+        printf("\n\n       ||=======\n       ||      |\n       ||\n       ||\n    ___||___");
+        break;
 
     case 8:
-     printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||\n    ___||___");
-     break;
+        printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||\n    ___||___");
+        break;
 
     case 9:
-    printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||     /|%c\n    ___||___",92);
-     break;
+        printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||     /|%c\n    ___||___", 92);
+        break;
 
     case 10:
-     printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||     /|%c\n    ___||___  / %c",92,92);
-     break;
+        printf("\n\n       ||=======\n       ||      |\n       ||      0\n       ||     /|%c\n    ___||___  / %c", 92, 92);
+        break;
     default:
         break;
     }
