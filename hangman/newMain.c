@@ -34,14 +34,16 @@ char *getWordFromFile(char *nameOfFile)
 
     // count how many words in our file
     int countWords;
-
     while (fscanf(file, "%s", word) == 1)
     {
+
         countWords++;
     }
 
     // rewind() function repositions the file pointer associated with stream to the beginning of the file
+
     rewind(file);
+
     // create dynamic array
     char **array = malloc(countWords * sizeof(char *));
 
@@ -60,8 +62,6 @@ char *getWordFromFile(char *nameOfFile)
     char *wordWeNeed = getRandomWord(array, countWords);
 
     // teardown
-    for (x = 0; x < countWords; x++)
-        free(array[x]);
     free(array);
 
     return wordWeNeed;
@@ -94,7 +94,48 @@ int userNumber()
     return numberOfLetters;
 }
 
+char *getCharacters()
+{
+    FILE *file = fopen("alphabet.txt", "r");
+    char *arrChar;
+    int n = 0;
+    int c;
+
+    arrChar = malloc(52);
+
+    while ((c = fgetc(file)) != -1)
+    {
+        arrChar[n++] = (char)c;
+    }
+
+    return arrChar;
+}
+
 void printGallows(int mistakes);
+
+bool characterOrNot(char c)
+{
+    if (isalpha(c) != 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+};
+
+bool digitOrNot(char number)
+{
+    if (isdigit(number) != 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+};
 
 void checkUserLetters(char *mainWord, int lengthOfWord)
 {
@@ -116,6 +157,7 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
 
     while (mistakes < 10)
     {
+        printf("\n\n");
         printGallows(mistakes);
         printf("\n");
         for (int i = 0; i < lengthOfWord; i++)
@@ -123,9 +165,18 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
             printf("%c ", dashes[i]);
         }
         printf("\n\nYou have %d attempts", lives);
-        printf("\n");
-        printf("\nEnter a character: ");
-        scanf(" %c", &character);
+        printf("\n\n\n");
+
+        char *alphabet = getCharacters();
+
+        do
+        {
+            printf("\nEnter a character: ");
+            printf("\n");
+
+            scanf(" %c", &character);
+        } while (characterOrNot(character) != true);
+
         character = tolower(character);
 
         bool characterUsed = true;
@@ -182,7 +233,7 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
         {
             printf("%c ", alreadyUsed[i]);
         }
-             printf("\n");
+        printf("\n");
     }
 
     if (rightCharacters < lengthOfWord)
@@ -211,7 +262,7 @@ int main(void)
         printf("\n\t How many letters will be in the word:\n\t Write a number from 3 to 7\n");
         char *word;
         int number = userNumber();
-
+          
         switch (number)
         {
         case 3:
@@ -224,6 +275,7 @@ int main(void)
 
         case 5:
             word = lowercase("five.txt");
+
             break;
 
         case 6:
@@ -236,9 +288,10 @@ int main(void)
 
         int len = strlen(word);
         // char *word = lowercase("four.txt");
-        printf("\n%s -> %d", word, len);
+        // printf("\n%s -> %d", word, len);
 
         checkUserLetters(word, len);
+
         int gameRest;
         printf("\n\nIf you want to start the game again press 1\nif you want to end the game, press any other key\n"); // At the end of the game program asks user to replay or not
 
