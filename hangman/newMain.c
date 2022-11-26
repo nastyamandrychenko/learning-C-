@@ -78,37 +78,30 @@ char *lowercase(char *nameOfFile)
     return word;
 }
 
-// the function asks a person for a number and returns it
-int userNumber()
+bool isUserPutNumber()
 {
-    int numberOfLetters;
-    // the user enters how many letters he wants in the word
-    scanf("%d", &numberOfLetters);
-
-    // check that the entered value is not greater than 5 and not less than 2
-    while (numberOfLetters < 3 || numberOfLetters > 7)
-    {
-        printf("\n\t Write a number from 3 to 7!\n");
-        scanf("%d", &numberOfLetters);
-    }
-    return numberOfLetters;
 }
 
-char *getCharacters()
+// the function asks a person for a number and returns it
+char userNumber()
 {
-    FILE *file = fopen("alphabet.txt", "r");
-    char *arrChar;
-    int n = 0;
-    int c;
+   char numberOfLetters ;
 
-    arrChar = malloc(52);
-
-    while ((c = fgetc(file)) != -1)
+    // the user enters how many letters he wants in the word
+    scanf("%c", &numberOfLetters);
+    
+    // check that the entered value is not greater than 5 and not less than 2
+    while ( numberOfLetters != '3' && numberOfLetters != '4' && numberOfLetters != '5' && numberOfLetters != '6' && numberOfLetters != '7' )
     {
-        arrChar[n++] = (char)c;
-    }
 
-    return arrChar;
+        scanf("%c", &numberOfLetters);
+    }
+    
+   
+
+    
+
+    return numberOfLetters;
 }
 
 void printGallows(int mistakes);
@@ -116,18 +109,6 @@ void printGallows(int mistakes);
 bool characterOrNot(char c)
 {
     if (isalpha(c) != 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-};
-
-bool digitOrNot(char number)
-{
-    if (isdigit(number) != 0)
     {
         return true;
     }
@@ -166,8 +147,6 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
         }
         printf("\n\nYou have %d attempts", lives);
         printf("\n\n\n");
-
-        char *alphabet = getCharacters();
 
         do
         {
@@ -261,34 +240,34 @@ int main(void)
         printf("\n\n\t\t\tMENU");
         printf("\n\t How many letters will be in the word:\n\t Write a number from 3 to 7\n");
         char *word;
-        int number = userNumber();
-          
-        switch (number)
+        char num = userNumber();
+       
+        switch (num)
         {
-        case 3:
+        case '3':
             word = lowercase("three.txt");
             break;
 
-        case 4:
+        case '4':
             word = lowercase("four.txt");
             break;
 
-        case 5:
+        case '5':
             word = lowercase("five.txt");
 
             break;
 
-        case 6:
+        case '6':
             word = lowercase("six.txt");
             break;
-        case 7:
+        case '7':
             word = lowercase("seven.txt");
             break;
         };
 
         int len = strlen(word);
         // char *word = lowercase("four.txt");
-        // printf("\n%s -> %d", word, len);
+        printf("\n%s -> %d", word, len);
 
         checkUserLetters(word, len);
 
