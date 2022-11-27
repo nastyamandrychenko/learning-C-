@@ -33,27 +33,27 @@ int main(void)
         {
         case '3':
         // get random word from file
-            word = lowercase("./words/three.txt");
+            word = lowerCase("./words/three.txt");
             break;
 
         case '4':
         // get random word from file
-            word = lowercase("./words/four.txt");
+            word = lowerCase("./words/four.txt");
             break;
 
         case '5':
         // get random word from file
-            word = lowercase("./words/five.txt");
+            word = lowerCase("./words/five.txt");
             break;
 
         case '6':
         // get random word from file
-            word = lowercase("./words/six.txt");
+            word = lowerCase("./words/six.txt");
             break;
 
         case '7':
         // get random word from file
-            word = lowercase("./words/seven.txt");
+            word = lowerCase("./words/seven.txt");
             break;
         };
 

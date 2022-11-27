@@ -116,6 +116,8 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
             lives--;
         };
 
+        //used letters +1   
+        numOfChar++;
 
         //print an array with already used letters
         printf("\nLetters used:");
@@ -125,8 +127,7 @@ void checkUserLetters(char *mainWord, int lengthOfWord)
         }
         printf("\n");
 
-      //used letters +1   
-        numOfChar++;
+     
 
     // check if the number of correctly entered letters is equal to the number of letters in the word to be guessed. 
     // If yes, then the user has won.

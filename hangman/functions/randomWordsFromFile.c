@@ -61,7 +61,7 @@ char *randomWordFromFile(char *nameOfFile)
 }
 
 // function converts letters to lower case
-char *lowercase(char *nameOfFile)
+char *lowerCase(char *nameOfFile)
 {
     char *word = randomWordFromFile(nameOfFile);
     for (int i = 0; word[i]; i++)
