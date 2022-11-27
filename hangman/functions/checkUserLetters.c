@@ -1,14 +1,7 @@
 // function checks if the user has entered a character
 bool characterOrNot(char c)
 {
-    if (isalpha(c) != 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return (isalpha(c) != 0);
 };
 
 // the main function that checks the letter entered by the user. The function receives the word to be guessed and its length

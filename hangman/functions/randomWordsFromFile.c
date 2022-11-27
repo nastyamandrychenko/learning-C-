@@ -1,4 +1,3 @@
-// function get random word from array
 char *getRandomWord(char **array, int countWords)
 {
     // initialize the seed of random in each run of the code to get a different random result by srand.
@@ -11,7 +10,7 @@ char *getRandomWord(char **array, int countWords)
 
 // function receive name of file, then open this file and count how many words in it. Then in the function we create dynamic array
 // and fill with words from the file. we call the function to get a random word, then we clear the dynamic array and finally return the random word from our file
-char *randomWordFromFile(char *nameOfFile)
+char *handleGetRandomWord(char *nameOfFile)
 {
     int x;
     char word[30];
@@ -42,12 +41,12 @@ char *randomWordFromFile(char *nameOfFile)
     x = 0;
 
     // fill dynamic array with words
-    while (fscanf(file, "%s", word) == 1)
-    {
-        // strdup() - duplicate a string
-        array[x] = strdup(word);
-        x++;
+      for(int i = 0; i < countWords; i++) {
+        fscanf(file, "%s", word);;
+        array[i] = malloc(strlen(word)); 
+        strcpy(array[i], word);  // copy the string to the array
     }
+
 
     fclose(file);
 
@@ -63,7 +62,7 @@ char *randomWordFromFile(char *nameOfFile)
 // function converts letters to lower case
 char *lowerCase(char *nameOfFile)
 {
-    char *word = randomWordFromFile(nameOfFile);
+    char *word = handleGetRandomWord(nameOfFile);
     for (int i = 0; word[i]; i++)
     {
         word[i] = tolower(word[i]);
